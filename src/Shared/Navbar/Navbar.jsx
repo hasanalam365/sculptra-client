@@ -4,7 +4,7 @@ import { Menu, X, Phone } from "lucide-react";
 
 // ---- Edit these ----
 const BRAND = { letter: "Z", name: "ZAMI", tagline: "Aesthetic Training" };
-const PHONE = { label: "+880 1XXX-XXXXXX", href: "tel:+8801XXXXXXXXX" };
+const PHONE = { label: "+44 800 999 1751", href: "tel:+448009991751" };
 
 // Screenshot er moto 3ta menu. Section id gulo tomar page er id er sathe milao.
 const navLinks = [
