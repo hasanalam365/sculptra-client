@@ -9,10 +9,11 @@ const PHONE = { label: "+44 800 999 1751", href: "tel:+448009991751" };
 const LOGO_SRC = "https://i.ibb.co.com/tTYjdRcM/logo-png.webp";
 
 // Ei id gulo section gulor id er sathe mile ache:
-// About.jsx -> "about", WhyUs.jsx -> "why-us",
+// About.jsx -> "about", CourseDetails.jsx -> "course-details", WhyUs.jsx -> "why-us",
 // StudentReview.jsx -> "student-reviews" & "gallery", Form.jsx -> "enquire"
 const navLinks = [
   { name: "About", id: "about" },
+  { name: "Course", id: "course-details" },
   { name: "Why Us", id: "why-us" },
   { name: "Reviews", id: "student-reviews" },
   { name: "Gallery", id: "gallery" },
@@ -113,7 +114,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop links (true center) */}
-          <div className="items-center hidden gap-9 lg:flex justify-self-center">
+          <div className="items-center hidden gap-6 xl:gap-9 lg:flex justify-self-center">
             {navLinks.map((link) => (
               <button
                 key={link.id}
