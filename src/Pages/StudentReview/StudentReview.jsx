@@ -269,15 +269,17 @@ const StudentReview = () => {
         {/* Testimonials slider */}
         <ReviewSlider />
 
-        {/* Gallery */}
-        <p className="mt-14 mb-5 text-[9px] uppercase tracking-[0.18em] text-white/40">
-          Gallery &mdash; moments from our training days
-        </p>
+        {/* Gallery (scroll target for the navbar "Gallery" link) */}
+        <div id="gallery" className="pt-14 scroll-mt-16">
+          <p className="mb-5 text-[9px] uppercase tracking-[0.18em] text-white/40">
+            Gallery &mdash; moments from our training days
+          </p>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {gallery.map((item) => (
-            <GalleryTile key={item.caption} {...item} />
-          ))}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {gallery.map((item) => (
+              <GalleryTile key={item.caption} {...item} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,0 +1,21 @@
+// Smooth-scrolls to an element by id.
+// - Respects "reduce motion" settings.
+// - Uses native scrollIntoView, so any `scroll-mt-*` class on the target
+//   (needed only for elements without their own top padding, e.g. #gallery)
+//   is honoured automatically.
+// Returns true if the element was found, false otherwise.
+export function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+
+  const reduceMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  el.scrollIntoView({
+    behavior: reduceMotion ? "auto" : "smooth",
+    block: "start",
+  });
+  return true;
+}

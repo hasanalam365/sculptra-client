@@ -1,15 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { scrollToSection } from "../../Shared/utils/scrollToSection";
 
 const Banner = () => {
-  const navigate = useNavigate();
-
-  const scrollToContact = () => {
-    document
-      .getElementById("contact")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  const scrollToEnquire = () => scrollToSection("enquire");
 
   return (
     <section
@@ -55,7 +49,7 @@ const Banner = () => {
 
             <div className="flex flex-col gap-3 mt-9 sm:flex-row">
               <button
-                onClick={() => navigate("/enroll")}
+                onClick={scrollToEnquire}
                 className="flex items-center justify-center gap-3 px-7 h-[48px] text-[11px] font-bold uppercase tracking-[0.16em] text-[#06222a] bg-cyan-400 rounded-md hover:bg-cyan-300 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
               >
                 Get course details &amp; prices
@@ -63,7 +57,7 @@ const Banner = () => {
               </button>
 
               <button
-                onClick={scrollToContact}
+                onClick={scrollToEnquire}
                 className="flex items-center justify-center px-7 h-[48px] text-[11px] font-bold uppercase tracking-[0.16em] text-white border border-white/25 rounded-md hover:bg-white/5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60"
               >
                 Talk to an advisor

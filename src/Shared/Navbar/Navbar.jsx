@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
+import { scrollToSection } from "../utils/scrollToSection";
 
 // ---- Edit these ----
 const BRAND = { letter: "Z", name: "ZAMI", tagline: "Aesthetic Training" };
 const PHONE = { label: "+44 800 999 1751", href: "tel:+448009991751" };
 const LOGO_SRC = "https://i.ibb.co.com/tTYjdRcM/logo-png.webp";
 
-// Section id gulo tomar page er id er sathe milao.
+// Ei id gulo section gulor id er sathe mile ache:
+// About.jsx -> "about", WhyUs.jsx -> "why-us",
+// StudentReview.jsx -> "student-reviews" & "gallery", Form.jsx -> "enquire"
 const navLinks = [
   { name: "About", id: "about" },
+  { name: "Why Us", id: "why-us" },
+  { name: "Reviews", id: "student-reviews" },
   { name: "Gallery", id: "gallery" },
-  { name: "Contact", id: "contact" },
 ];
+
+const ENQUIRE_ID = "enquire";
 
 // Banner er content er sathe SAME padding. Hero er inner wrapper e-o ei class ta use koro.
 const CONTAINER =
@@ -20,32 +26,70 @@ const CONTAINER =
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeId, setActiveId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const isHome = location.pathname === "/";
 
-  const handleScroll = (sectionId) => {
-    setMobileMenuOpen(false);
+  // Scroll korle kon section dekha jacche seta highlight korbe
+  useEffect(() => {
+    if (!isHome) {
+      setActiveId(null);
+      return;
+    }
 
-    const scrollToSection = () => {
-      document
-        .getElementById(sectionId)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const trackedIds = [...navLinks.map((l) => l.id), ENQUIRE_ID];
+    let ticking = false;
+
+    const update = () => {
+      const line = window.innerHeight * 0.35;
+      let current = null;
+      for (const id of trackedIds) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      }
+      setActiveId(current);
+      ticking = false;
     };
 
-    if (location.pathname !== "/") navigate("/");
-    setTimeout(scrollToSection, 300);
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [isHome]);
+
+  const goToSection = (sectionId) => {
+    setMobileMenuOpen(false);
+
+    // Onno page theke click korle age Home e jabe, tarpor MainLayout scroll korbe
+    if (!isHome) {
+      navigate("/", { state: { scrollTo: sectionId } });
+      return;
+    }
+    scrollToSection(sectionId);
   };
 
-  // Page e #enquiry form thakle shekhane scroll korbe, na thakle /enroll e jabe
-  const goEnquire = () => {
+  const handleLogoClick = () => {
     setMobileMenuOpen(false);
-    const form = document.getElementById("enquiry");
-    if (form) {
-      form.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else {
-      navigate("/enroll");
+    if (isHome) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
+  const linkClass = (id) =>
+    `relative text-[11.5px] uppercase tracking-[0.18em] transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-400 rounded ${
+      activeId === id ? "text-cyan-300" : "text-white/60 hover:text-white"
+    }`;
 
   return (
     <nav className="fixed top-0 left-0 z-50 w-full">
@@ -56,6 +100,7 @@ export default function Navbar() {
           {/* Logo (left) */}
           <Link
             to="/"
+            onClick={handleLogoClick}
             className="flex items-center shrink-0 group justify-self-start"
             aria-label={`${BRAND.name} home`}
           >
@@ -72,10 +117,17 @@ export default function Navbar() {
             {navLinks.map((link) => (
               <button
                 key={link.id}
-                onClick={() => handleScroll(link.id)}
-                className="text-[11.5px] uppercase tracking-[0.18em] text-white/60 hover:text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-400 rounded"
+                onClick={() => goToSection(link.id)}
+                aria-current={activeId === link.id ? "true" : undefined}
+                className={linkClass(link.id)}
               >
                 {link.name}
+                <span
+                  aria-hidden="true"
+                  className={`absolute left-0 -bottom-1.5 h-px bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.7)] transition-all duration-300 ${
+                    activeId === link.id ? "w-full opacity-100" : "w-0 opacity-0"
+                  }`}
+                />
               </button>
             ))}
           </div>
@@ -90,7 +142,7 @@ export default function Navbar() {
               {PHONE.label}
             </a>
             <button
-              onClick={goEnquire}
+              onClick={() => goToSection(ENQUIRE_ID)}
               className="h-[37px] px-6 text-[11px] font-bold uppercase tracking-[0.16em] text-[#06222a] rounded-full bg-cyan-400 hover:bg-cyan-300 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
             >
               Talk To An Advisor
@@ -120,8 +172,13 @@ export default function Navbar() {
             {navLinks.map((link) => (
               <button
                 key={link.id}
-                onClick={() => handleScroll(link.id)}
-                className="text-left text-[12px] uppercase tracking-[0.18em] text-white/70 hover:text-white transition-colors"
+                onClick={() => goToSection(link.id)}
+                aria-current={activeId === link.id ? "true" : undefined}
+                className={`text-left text-[12px] uppercase tracking-[0.18em] transition-colors ${
+                  activeId === link.id
+                    ? "text-cyan-300"
+                    : "text-white/70 hover:text-white"
+                }`}
               >
                 {link.name}
               </button>
@@ -136,10 +193,10 @@ export default function Navbar() {
             </a>
 
             <button
-              onClick={goEnquire}
+              onClick={() => goToSection(ENQUIRE_ID)}
               className="h-[40px] text-[11px] font-bold uppercase tracking-[0.16em] text-[#06222a] rounded-full bg-cyan-400 hover:bg-cyan-300 transition-colors"
             >
-             Talk To An Advisor
+              Talk To An Advisor
             </button>
           </div>
         </div>

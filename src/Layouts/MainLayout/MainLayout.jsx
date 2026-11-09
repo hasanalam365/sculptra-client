@@ -5,18 +5,31 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../../Shared/Navbar/Navbar";
 import Footer from "../../Shared/Footer/Footer";
 import SiteBackground from "../../Shared/SiteBackground/SiteBackground";
+import { scrollToSection } from "../../Shared/utils/scrollToSection";
 
 // Resets the window's scroll position to the top every time the route
 // (pathname) changes, so navigating from one page to another — or from
 // the Courses grid to a dynamic /academy-course-details/:id page — always
 // opens at the top instead of keeping the previous page's scroll offset.
 // "auto" (not "smooth") makes this an instant jump with no visible scroll.
+// If the navbar sent us here with { state: { scrollTo: "section-id" } }
+// (e.g. user clicked "Gallery" while on another page), we smooth-scroll to
+// that section instead of the top.
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
 
   useEffect(() => {
+    const target = state?.scrollTo;
+
+    if (!target) {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      return;
+    }
+
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, [pathname]);
+    const frame = requestAnimationFrame(() => scrollToSection(target));
+    return () => cancelAnimationFrame(frame);
+  }, [pathname, state]);
 
   return null;
 };
