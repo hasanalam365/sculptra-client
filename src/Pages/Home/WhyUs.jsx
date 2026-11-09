@@ -1,82 +1,127 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowRight, Syringe, ClipboardList, GraduationCap } from "lucide-react";
+import {
+  User,
+  Stethoscope,
+  Building2,
+  Award,
+  HeartHandshake,
+} from "lucide-react";
 
-const features = [
+const infoCards = [
   {
-    icon: Syringe,
-    title: "Advanced Injectable Technique",
-    text: "Build practical understanding of a collagen-stimulating treatment technique used in modern aesthetics practice.",
+    icon: Stethoscope,
+    title: "Practical training arrangements",
+    text: "[Group size and format to be confirmed by Zami]",
   },
   {
-    icon: ClipboardList,
-    title: "Patient Assessment & Treatment Planning",
-    text: "Learn how practitioners approach suitability, assessment and treatment planning before a procedure.",
+    icon: Building2,
+    title: "Academy facilities",
+    text: "[Training environment details to be confirmed by Zami]",
   },
   {
-    icon: GraduationCap,
-    title: "Professional Aesthetics Training",
-    text: "Train in a structured, practitioner-led environment designed for existing aesthetics professionals.",
+    icon: Award,
+    title: "Certification",
+    text: "[Certification or accreditation details to be confirmed by Zami]",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Student support",
+    text: "[Post-course support details to be confirmed by Zami]",
   },
 ];
 
-const WhyUs = () => {
-  const navigate = useNavigate();
+const trainerDetails = [
+  "[Trainer name]",
+  "[Qualifications]",
+  "[Years of clinical experience]",
+];
 
+const WhyUs = () => {
   return (
     <section id="why-us" className="px-4 py-16 sm:px-8 lg:py-24">
       <div className="mx-auto max-w-[1200px]">
         {/* Heading block */}
         <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-400">
-          [ Why learn Sculptra ]
+          [ Why train with us ]
         </p>
 
-        <h2 className="mt-5 max-w-[720px] font-serif font-bold uppercase leading-[1.05] tracking-tight text-white text-[34px] sm:text-[48px] lg:text-[56px]">
-          Expand your{" "}
+        <h2 className="mt-5 max-w-[900px] font-serif font-bold uppercase leading-[1.05] tracking-tight text-white text-[34px] sm:text-[48px] lg:text-[56px]">
+          Your next step in{" "}
           <span
             className="text-cyan-400"
             style={{ textShadow: "0 0 26px rgba(34,211,238,0.45)" }}
           >
             aesthetics
           </span>{" "}
-          skills
+          training
         </h2>
 
-        <p className="mt-6 max-w-[560px] text-[14px] leading-relaxed text-white/65">
-          Develop new skills in a sought-after collagen-stimulating treatment.
-          Our training helps eligible practitioners understand the product and
-          build practical treatment knowledge.
+        <p className="mt-6 max-w-[620px] text-[14px] leading-relaxed text-white/65">
+          Learn in a professional training environment with guidance from
+          experienced practitioners. Discover the principles of Sculptra
+          treatments and develop your understanding of patient assessment,
+          treatment planning and practical application.
         </p>
 
-        {/* Feature cards */}
-        <div className="grid grid-cols-1 gap-5 mt-12 md:grid-cols-3">
-          {features.map(({ icon: Icon, title, text }) => (
+        {/* Cards grid */}
+        <div className="grid grid-cols-1 gap-4 mt-12 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
+          {/* Trainer profile (spans 2 rows on large screens) */}
+          <article className="p-6 rounded-xl border border-white/10 bg-[#141a1b]/80 backdrop-blur-sm transition-colors duration-300 hover:border-cyan-400/30 md:col-span-2 lg:col-span-1 lg:row-span-2 flex flex-col">
+            <span className="flex items-center justify-center w-10 h-10 rounded-lg border border-cyan-400/40 bg-cyan-400/10 text-cyan-300">
+              <User size={16} strokeWidth={1.8} />
+            </span>
+
+            <h3 className="mt-6 font-serif text-[17px] font-bold leading-snug text-white">
+              Trainer profile
+            </h3>
+
+            <div className="flex items-center gap-4 mt-6">
+              <div
+                className="flex items-center justify-center w-[52px] h-[52px] shrink-0 rounded-md border border-dashed border-white/25 text-center text-[7px] uppercase leading-tight tracking-[0.12em] text-white/40"
+                aria-label="Trainer photo placeholder"
+              >
+                <img src="https://i.ibb.co.com/WpM8qx4J/doctor.png" alt="" />
+              </div>
+
+              <ul className="space-y-2.5">
+                {trainerDetails.map((item) => (
+                  <li
+                    key={item}
+                    className="text-[10px] uppercase tracking-[0.16em] text-white/65"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <p className="mt-auto pt-8 text-[9px] uppercase tracking-[0.16em] text-white/40">
+              Trainer details to be confirmed by Zami
+            </p>
+          </article>
+
+          {/* Info cards */}
+          {infoCards.map(({ icon: Icon, title, text }) => (
             <article
               key={title}
-              className="p-6 rounded-xl border border-white/10 bg-[#141a1b]/80 backdrop-blur-sm transition-colors duration-300 hover:border-cyan-400/30"
+              className="p-5 rounded-xl border border-white/10 bg-[#141a1b]/80 backdrop-blur-sm transition-colors duration-300 hover:border-cyan-400/30"
             >
-              <span className="flex items-center justify-center w-10 h-10 rounded-lg border border-cyan-400/40 bg-cyan-400/10 text-cyan-300">
-                <Icon size={16} strokeWidth={1.8} />
-              </span>
-
-              <h3 className="mt-6 font-serif text-[16px] font-bold leading-snug text-white">
-                {title}
-              </h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-white/60">
+              <div className="flex items-start gap-3">
+                <Icon
+                  size={14}
+                  strokeWidth={1.8}
+                  className="mt-1 shrink-0 text-cyan-400"
+                />
+                <h3 className="font-serif text-[14px] font-bold leading-snug text-white">
+                  {title}
+                </h3>
+              </div>
+              <p className="mt-4 text-[9.5px] uppercase leading-relaxed tracking-[0.12em] text-white/45">
                 {text}
               </p>
             </article>
           ))}
         </div>
-
-        {/* CTA */}
-        <button
-          onClick={() => navigate("/enroll")}
-          className="flex items-center gap-3 px-6 h-[42px] mt-10 text-[10.5px] font-bold uppercase tracking-[0.16em] text-[#06222a] bg-cyan-400 rounded-md hover:bg-cyan-300 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
-        >
-          Enquire about training
-          <ArrowRight size={14} />
-        </button>
       </div>
     </section>
   );

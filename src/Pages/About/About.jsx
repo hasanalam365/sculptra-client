@@ -7,7 +7,7 @@ const IMAGES = {
     "https://images.unsplash.com/photo-1746017090180-ebb14a589639?auto=format&fit=crop&w=1200&q=80",
   // Unsplash: dark moody woman portrait by yulia pantiukhina (placeholder, better close-up hole eta bodle nio)
   volume:
-    "https://images.unsplash.com/photo-1542745719-d90adc278e1f?auto=format&fit=crop&w=1200&q=80",
+    "https://i.ibb.co.com/1YgFJLMg/Sculptra-Treatment-Areas-Infographic.png",
 };
 
 const cards = [
@@ -17,7 +17,7 @@ const cards = [
     image: IMAGES.collagen,
   },
   {
-    title: "Volume & Contour Support",
+    title: "Treatment AREA",
     text: "Explore a treatment approach used to support facial volume and contour with gradual, natural-looking change.",
     image: IMAGES.volume,
   },
