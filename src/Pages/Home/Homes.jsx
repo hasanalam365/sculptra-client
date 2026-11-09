@@ -5,6 +5,7 @@ import WhyUs from './WhyUs'
 import StudentReview from '../StudentReview/StudentReview'
 import Form from '../Form/Form'
 import CourseDetails from '../../Components/CourseDetails'
+import Video from '../Video/Video'
 
 const Homes = () => {
   return (
@@ -12,6 +13,7 @@ const Homes = () => {
         <Banner/>
         <About/>
         <CourseDetails/>
+        <Video/>
         <WhyUs/>
         <StudentReview/>
         <Form/>
