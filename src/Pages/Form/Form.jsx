@@ -8,6 +8,8 @@ import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 
 const EASE = [0.22, 1, 0.36, 1];
 
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
 const fields = [
   {
     name: "fullName",
@@ -30,12 +32,34 @@ const fields = [
     placeholder: "you@clinic.com",
     autoComplete: "email",
   },
+  {
+    name: "message",
+    label: "Message (optional)",
+    type: "textarea",
+    placeholder: "Any questions about the course? Tell us here.",
+    autoComplete: "off",
+  },
 ];
 
 /* ---------- Underline-style input with animated focus line ---------- */
 const Field = ({ field, value, error, onChange }) => {
   const [focused, setFocused] = useState(false);
   const { name, label, type, placeholder, autoComplete } = field;
+
+  const inputProps = {
+    id: name,
+    name,
+    value,
+    placeholder,
+    autoComplete,
+    onChange,
+    onFocus: () => setFocused(true),
+    onBlur: () => setFocused(false),
+    "aria-invalid": !!error,
+    "aria-describedby": error ? `${name}-error` : undefined,
+    className:
+      "w-full pb-2.5 text-[12px] text-white bg-transparent border-b outline-none placeholder:text-white/35 border-white/15",
+  };
 
   return (
     <div>
@@ -47,20 +71,16 @@ const Field = ({ field, value, error, onChange }) => {
       </label>
 
       <div className="relative mt-2">
-        <input
-          id={name}
-          name={name}
-          type={type}
-          value={value}
-          placeholder={placeholder}
-          autoComplete={autoComplete}
-          onChange={onChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${name}-error` : undefined}
-          className="w-full pb-2.5 text-[12px] text-white bg-transparent border-b outline-none placeholder:text-white/35 border-white/15"
-        />
+        {type === "textarea" ? (
+          <textarea
+            {...inputProps}
+            rows={3}
+            maxLength={500}
+            className={`${inputProps.className} resize-none leading-relaxed`}
+          />
+        ) : (
+          <input type={type} {...inputProps} />
+        )}
         {/* animated focus underline */}
         <motion.span
           aria-hidden="true"
@@ -93,11 +113,13 @@ const Field = ({ field, value, error, onChange }) => {
 const Form = () => {
   const reduce = useReducedMotion();
 
-  const [values, setValues] = useState({ fullName: "", mobile: "", email: "" });
+  const [values, setValues] = useState({ fullName: "", mobile: "", email: "", message: "" });
   const [consent, setConsent] = useState(false);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [shakeKey, setShakeKey] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   /* shared reveal helpers */
   const reveal = (delay = 0) => ({
@@ -124,19 +146,42 @@ const Form = () => {
     return er;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+
     const er = validate();
     setErrors(er);
+    setServerError("");
 
     if (Object.keys(er).length) {
       setShakeKey((k) => k + 1);
       return;
     }
 
-    // TODO: connect to your backend / email service here,
-    // e.g. fetch("/api/enquiry", { method: "POST", body: JSON.stringify(values) })
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/enquiry`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...values, consent }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        // server-side field errors thakle field er niche dekhao
+        if (data.errors) setErrors(data.errors);
+        setServerError(data.message || "Something went wrong. Please try again.");
+        setShakeKey((k) => k + 1);
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setServerError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const scrollToForm = () => {
@@ -296,7 +341,7 @@ const Form = () => {
                   ))}
 
                   {/* Consent */}
-                  <motion.div {...reveal(0.5)}>
+                  <motion.div {...reveal(0.58)}>
                     <label className="flex items-start gap-2.5 cursor-pointer select-none">
                       <input
                         type="checkbox"
@@ -354,18 +399,33 @@ const Form = () => {
                 {/* Submit */}
                 <motion.button
                   type="submit"
-                  {...reveal(0.58)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex items-center justify-center w-full gap-3 h-[44px] mt-7 text-[10.5px] font-bold uppercase tracking-[0.16em] text-[#06222a] bg-cyan-400 rounded-md shadow-[0_0_28px_rgba(34,211,238,0.3)] hover:bg-cyan-300 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
+                  disabled={loading}
+                  {...reveal(0.66)}
+                  whileHover={loading ? undefined : { scale: 1.02 }}
+                  whileTap={loading ? undefined : { scale: 0.98 }}
+                  className="flex items-center justify-center w-full gap-3 h-[44px] mt-7 disabled:opacity-70 disabled:cursor-not-allowed text-[10.5px] font-bold uppercase tracking-[0.16em] text-[#06222a] bg-cyan-400 rounded-md shadow-[0_0_28px_rgba(34,211,238,0.3)] hover:bg-cyan-300 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
                 >
-                  Get course details &amp; prices
-                  <ArrowRight size={14} />
+                  {loading ? "Sending..." : "Get course details & prices"}
+                  {!loading && <ArrowRight size={14} />}
                 </motion.button>
+
+                <AnimatePresence>
+                  {serverError && (
+                    <motion.p
+                      role="alert"
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="mt-3 text-center text-[11px] text-red-400/90"
+                    >
+                      {serverError}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
 
                 <motion.p
                   className="flex items-center justify-center gap-1.5 mt-4 text-[8px] uppercase tracking-[0.18em] text-white/40"
-                  {...reveal(0.64)}
+                  {...reveal(0.72)}
                 >
                   <ShieldCheck size={10} className="text-cyan-400/70" />
                   Your details stay private. No obligation to book.
