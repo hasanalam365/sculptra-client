@@ -8,7 +8,7 @@ import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 
 const EASE = [0.22, 1, 0.36, 1];
 
-const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+const API = import.meta.env.VITE_API_URL;
 
 const fields = [
   {
@@ -161,7 +161,7 @@ const Form = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/enquiry`, {
+      const res = await fetch(`${API}/enquiry`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...values, consent }),
