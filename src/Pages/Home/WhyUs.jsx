@@ -11,22 +11,22 @@ const infoCards = [
   {
     icon: Stethoscope,
     title: "Practical training arrangements",
-    text: "[Group size and format to be confirmed by Zami]",
+    text: "[]",
   },
   {
     icon: Building2,
     title: "Academy facilities",
-    text: "[Training environment details to be confirmed by Zami]",
+    text: "[]",
   },
   {
     icon: Award,
     title: "Certification",
-    text: "[Certification or accreditation details to be confirmed by Zami]",
+    text: "[]",
   },
   {
     icon: HeartHandshake,
     title: "Student support",
-    text: "[Post-course support details to be confirmed by Zami]",
+    text: "[]",
   },
 ];
 
@@ -95,9 +95,7 @@ const WhyUs = () => {
               </ul>
             </div>
 
-            <p className="mt-auto pt-8 text-[9px] uppercase tracking-[0.16em] text-white/40">
-              Trainer details to be confirmed by Zami
-            </p>
+            
           </article>
 
           {/* Info cards */}

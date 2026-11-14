@@ -4,7 +4,7 @@ import { Menu, X, Phone } from "lucide-react";
 import { scrollToSection } from "../utils/scrollToSection";
 
 // ---- Edit these ----
-const BRAND = { letter: "Z", name: "ZAMI", tagline: "Aesthetic Training" };
+const BRAND = { letter: "FOF", name: "Faces On Faces", tagline: "Aesthetic Training" };
 const PHONE = { label: "+44 800 999 1751", href: "tel:+448009991751" };
 const LOGO_SRC = "https://i.ibb.co.com/tTYjdRcM/logo-png.webp";
 

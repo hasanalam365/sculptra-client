@@ -21,23 +21,13 @@ import {
 } from "lucide-react";
 import { scrollToSection } from "../Shared/utils/scrollToSection";
 
-/*
-  NOTE: Anything written as [ ... to be confirmed by Zami ] is a placeholder.
-  Treatment information below is general, educational wording. Please have it
-  reviewed by Zami's clinical lead before publishing, and make sure it follows
-  the product's licensed indications and advertising rules in your country.
-*/
+
 
 const EASE = [0.22, 1, 0.36, 1];
 
 /* ----------------------------- DATA ----------------------------- */
 
-const snapshot = [
-  { icon: Clock, label: "Duration", value: "[To be confirmed by Zami]" },
-  { icon: Users, label: "Group size & format", value: "[To be confirmed by Zami]" },
-  { icon: Award, label: "Certification", value: "[To be confirmed by Zami]" },
-  { icon: PoundSterling, label: "Fees & dates", value: "[Shared on enquiry]" },
-];
+
 
 const tabs = [
   { id: "how", label: "How it works" },
@@ -131,7 +121,7 @@ const modules = [
     points: [
       "Preparation steps and why they matter",
       "Injection principles, depth and distribution",
-      "Hands-on practice [format to be confirmed by Zami]",
+      
     ],
   },
   {
@@ -156,15 +146,15 @@ const modules = [
 
 const forWho = [
   "Existing aesthetics practitioners looking to add a collagen-stimulating treatment to their knowledge",
-  "Practitioners with a qualification that meets our eligibility criteria [to be confirmed by Zami]",
+  "Practitioners with a qualification that meets our eligibility criteria ",
   "Professionals who want structured, practitioner-led training",
 ];
 
 const included = [
-  "Theory and practical training [details to be confirmed by Zami]",
-  "Course materials [details to be confirmed by Zami]",
-  "Certification or accreditation [details to be confirmed by Zami]",
-  "Post-course support [details to be confirmed by Zami]",
+  "Theory and practical training ",
+  "Course materials ",
+  "Certification or accreditation ",
+  "Post-course support ",
 ];
 
 const faqs = [
@@ -186,7 +176,7 @@ const faqs = [
   },
   {
     q: "Will I get hands-on practice?",
-    a: "The practical format, group size and number of supervised cases are still being finalised. [To be confirmed by Zami]. Ask our team when you enquire.",
+    a: "The practical format, group size and number of supervised cases are still being finalised.. Ask our team when you enquire.",
   },
   {
     q: "What happens after I enquire?",
@@ -371,9 +361,7 @@ const Curriculum = () => {
           planning, technique and aftercare, so you understand the full patient
           journey rather than just the injection.
         </p>
-        <p className="mt-4 text-[10px] uppercase tracking-[0.16em] text-white/40">
-          [ Final curriculum to be confirmed by Zami ]
-        </p>
+        
       </div>
 
       <div className="space-y-3">
@@ -495,28 +483,6 @@ const CourseDetails = () => {
           for your practice.
         </motion.p>
 
-        {/* Snapshot */}
-        <div className="grid grid-cols-1 gap-4 mt-10 sm:grid-cols-2 lg:grid-cols-4">
-          {snapshot.map(({ icon: Icon, label, value }, i) => (
-            <motion.div
-              key={label}
-              {...reveal(0.1 + i * 0.07)}
-              className="flex items-start gap-3 p-4 rounded-xl border border-white/10 bg-[#141a1b]/80 backdrop-blur-sm transition-colors duration-300 hover:border-cyan-400/30"
-            >
-              <span className="flex items-center justify-center w-9 h-9 border rounded-lg shrink-0 border-cyan-400/40 bg-cyan-400/10 text-cyan-300">
-                <Icon size={15} strokeWidth={1.8} />
-              </span>
-              <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-white/45">
-                  {label}
-                </p>
-                <p className="mt-1 text-[12px] leading-snug text-white/80">
-                  {value}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
 
         {/* Tabs */}
         <motion.div {...reveal(0.1)} className="mt-14">
